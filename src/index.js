@@ -13,13 +13,40 @@ const refs = {
 };
 
 refs.menuMarkup.innerHTML = createMarkup(menuCards);
+themeDownload();
+refs.switcher.addEventListener('change', toggleTheme);
 
-refs.switcher.addEventListener('change', changeTheme);
+// defaultTheme();
 
-function changeTheme(event) {
+function toggleTheme(event) {
   if (event.target.checked) {
-    refs.body.classList.add('dark-theme');
+    themeDark();
   } else {
-    refs.body.classList.remove('dark-theme');
+    themeLight();
+  }
+}
+
+function themeLight() {
+  refs.body.classList.add(Theme.LIGHT);
+  refs.body.classList.remove(Theme.DARK);
+  localStorage.setItem('theme', Theme.LIGHT);
+}
+function themeDark() {
+  refs.body.classList.remove(Theme.LIGHT);
+  refs.body.classList.add(Theme.DARK);
+  localStorage.setItem('theme', Theme.DARK);
+}
+function themeDownload() {
+  const themeStatus = localStorage.getItem('theme');
+
+  if (themeStatus) {
+    if (localStorage.getItem('theme') === Theme.DARK) {
+      refs.body.classList.add(Theme.DARK);
+      refs.switcher.checked = true;
+    }
+    if (localStorage.getItem('theme') === Theme.LIGHT) {
+      refs.body.classList.add(Theme.LIGHT);
+      refs.switcher.checked = false;
+    }
   }
 }
